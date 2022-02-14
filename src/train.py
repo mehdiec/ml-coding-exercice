@@ -6,7 +6,7 @@ from shutil import copyfile
 from sklearn import svm
 from sklearn.model_selection import train_test_split
 
-from src.data.load import train_loader
+from data.load import train_loader
 
 
 def generate_unique_logpath(logdir, raw_run_name):
@@ -37,7 +37,7 @@ def main(cfg, path_to_config):
     """
     # Load data
     cfg["DATASET"]["VALID_RATIO"]
-    num_images = cfg["DATASET"]["num_images"]
+    num_images = cfg["DATASET"]["NUM_IMAGE"]
     images, targets = train_loader(num_images=num_images)
     targets = targets[:num_images]
 

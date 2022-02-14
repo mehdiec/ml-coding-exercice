@@ -7,6 +7,10 @@ from PIL import Image
 import PIL.ImageOps
 import matplotlib.pyplot as plt
 
+from data.load import load_single_image
+
+DIM = 28, 28
+
 
 def predict_one_shot(cfg):
     """Run the inference on the test set and writes the output on a csv file
@@ -16,7 +20,8 @@ def predict_one_shot(cfg):
     """
 
     # Load test data
-    image = "./data/6.jpg"
+    # loaded_img = load_single_image()
+    image = "../data/6.jpg"
     image = Image.open(image)
 
     image = PIL.ImageOps.invert(image)
@@ -26,8 +31,6 @@ def predict_one_shot(cfg):
 
     # Load model
     model = pickle.load(open(cfg["TEST"]["PATH_TO_MODEL"], "rb"))
-
-    DIM = 28, 28
 
     prediction = model.predict(loaded_img.reshape(1, -1))
 
