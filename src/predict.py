@@ -1,43 +1,64 @@
-import gzip
+import argparse
+import pickle
+import yaml
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt, matplotlib.image as mpimg
-from sklearn.model_selection import train_test_split
 from sklearn import svm
 from PIL import Image
 import PIL.ImageOps
+import matplotlib.pyplot as plt
 
-##################################################### prediction #####################################################
-i = np.random.randint(100)
+from data.load import load_single_image
 
-
-prediction = clf.predict(test_images[i].reshape(1, -1))
-
-
-img = test_images[
-    i,
-].reshape((28, 28))
-plt.imshow(img, cmap="binary")
-plt.title(prediction)
-plt.show()
-
-##################################################### loading #####################################################
+DIM = 28, 28
 
 
-DIM = 28, 28  # 256, 256
+def predict_one_shot(cfg):
+    """Run the inference on the test set and writes the output on a csv file
 
-image = "./data/6.jpg"
-image = Image.open(image)
+    Args:
+        cfg (dict): configuration
+    """
+
+    # Load test data
+    # loaded_img = load_single_image()
+    image = "../data/6.jpg"
+    image = Image.open(image)
+
+    image = PIL.ImageOps.invert(image)
+    image = image.convert("L")
+    img_file = image.resize(DIM)
+    loaded_img = np.array(img_file)
+
+    # Load model
+    model = pickle.load(open(cfg["TEST"]["PATH_TO_MODEL"], "rb"))
+
+    prediction = model.predict(loaded_img.reshape(1, -1))
+
+    img = img_file
+    plt.imshow(img, cmap="binary")
+    plt.title(prediction)
+    plt.show()
 
 
-image = PIL.ImageOps.invert(image)
-image = image.convert("L")
-img_file = image.resize(DIM)
-loaded_img = np.array(img_file)
-prediction = clf.predict(loaded_img.reshape(1, -1))
+if __name__ == "__main__":
+    # Init the parser;
+    inference_parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawTextHelpFormatter
+    )
 
+    # Add path to the config file to the command line arguments;
+    inference_parser.add_argument(
+        "--path_to_config",
+        type=str,
+        required=True,
+        default="./config.yaml",
+        help="path to config file.",
+    )
+    args = inference_parser.parse_args()
 
-img = img_file
-plt.imshow(img, cmap="binary")
-plt.title(prediction)
-plt.show()
+    # Load config file
+    with open(args.path_to_config, "r") as ymlfile:
+        config_file = yaml.load(ymlfile, Loader=yaml.Loader)
+
+    # Run prediction
+    predict_one_shot(cfg=config_file)

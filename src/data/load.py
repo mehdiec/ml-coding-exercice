@@ -10,8 +10,8 @@ DIM = 28, 28
 
 
 def train_loader(num_images=NUM_IMAGES):
-    train_images = gzip.open("./data/train-images-idx3-ubyte.gz", "r")
-    train_labels = gzip.open("./data/train-labels-idx1-ubyte.gz", "r")
+    train_images = gzip.open("../data/train-images-idx3-ubyte.gz", "r")
+    train_labels = gzip.open("../data/train-labels-idx1-ubyte.gz", "r")
 
     train_images.read(16)
     buf = train_images.read(image_size * image_size * num_images)
@@ -25,7 +25,7 @@ def train_loader(num_images=NUM_IMAGES):
     return images, targets
 
 
-def load_single_image(image_file="./data/6.jpg"):
+def load_single_image(image_file="../data/6.jpg"):
     DIM = 28, 28
 
     image = Image.open(image_file)
