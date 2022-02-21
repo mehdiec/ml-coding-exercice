@@ -1,0 +1,10 @@
+FROM python:3.9-slim
+
+RUN apt-get update
+RUN apt-get install git -y
+RUN git clone --branch staging https://github.com/mehdiec/ml-coding-exercice.git  
+RUN apt-get install python3-pip -y
+WORKDIR /ml-coding_exercice/src
+RUN pip3 install -r requirements.txt
+
+CMD python3 predict_api.py
