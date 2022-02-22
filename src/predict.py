@@ -1,11 +1,7 @@
-import argparse
-import pickle
-import yaml
 import numpy as np
 from sklearn import svm
 from PIL import Image
 import PIL.ImageOps
-import matplotlib.pyplot as plt
 
 DIM = 28, 28
 
