@@ -1,0 +1,30 @@
+DATA_DIR: "../data"
+OUTPUT_DIR: "../models"
+DATASET:
+  PREPROCESSING:
+    NORMALIZE:
+      ACTIVE: False
+      TYPE: "StandardScaler" # ["MinMaxScalar", "StandardScaler"]
+  VALID_RATIO: 0.8
+  NUM_IMAGE: 10000
+MODELS:
+  ML:
+    ACTIVE: True
+    GRID_SEARCH: False
+    TYPE: "SVM"
+    svm:
+      C: 1
+      gamma: "auto"
+      kernel: "rbf"
+      nu: 0.5
+TRAIN:
+  SAVE_DIR: "../models"
+TEST:
+  PATH_TO_MODEL: "../models/SVM_0/model.pck"
+  AVERAGE:
+    ACTIVE: True
+    PATH:
+      - {
+          MODEL: "../models/SVM_0/model.pck",
+          CONFIG: "../models/SVM_0/config_file.yaml",
+        }
